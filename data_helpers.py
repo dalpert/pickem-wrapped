@@ -6,18 +6,18 @@ from identifiers import name_dict
 DATA_PATH = "data/generated_data"
 
 
-def load_pickem_raw(week_num):
+def load_pickem_raw(week_num) -> pd.DataFrame:
     return pd.read_excel("data/pickem_results_23_24.xlsx", sheet_name=f"week{week_num}")
 
 
-def get_weekly_game_info(week_num):
+def get_weekly_game_info(week_num) -> pd.DataFrame:
     """Get relevant game info for one week of games."""
 
     df = load_pickem_raw(week_num)
     # first row of all nulls (where I'm going to cut off the table)
     first_row = df.index[df.isnull().all(1)].values[0]
     # row after last row of games (where totals are calculated)
-    last_row = df.index[df["Timestamp"].str.contains("total") == True].values[0]
+    last_row = df.index[df["Timestamp"].str.contains("total")].values[0]
     df_T = df.iloc[first_row + 1 : last_row].reset_index()
     df_T.drop(["index"], axis=1, inplace=True)
     df_T.columns = df_T.iloc[0]
@@ -32,14 +32,14 @@ def get_weekly_game_info(week_num):
     return df_clean
 
 
-def get_away_line(game_str):
+def get_away_line(game_str) -> float:
     away_line_str = game_str.split(" ")[1]
     if away_line_str == "(PK)":
         return 0
     return float(re.sub("[()]", "", away_line_str))
 
 
-def get_favorite(row):
+def get_favorite(row) -> tuple(str, str):
     if row["away_line"] < 0:
         # return favorite, underdog
         return (row["away_team"], row["home_team"])
@@ -64,7 +64,7 @@ def create_game_info():
     game_info.to_excel(f"{DATA_PATH}/game_info.xlsx", index=False)
 
 
-def get_weekly_picks(week_num):
+def get_weekly_picks(week_num) -> pd.DataFrame:
     """Get picks for one week of games"""
     df = load_pickem_raw(week_num)
     first_row = df.index[df.isnull().all(1)].values[0]
@@ -121,7 +121,7 @@ def recreate_data():
 
 
 # Easier way to call already-created tables in my notebook.
-def get_table(table_name):
+def get_table(table_name) -> pd.DataFrame:
     df = pd.read_excel(f"{DATA_PATH}/{table_name}.xlsx")
     exclude_col = "email"
     if exclude_col in df.columns:
