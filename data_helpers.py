@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import re
+from constants import name_dict
 
 
 def get_weekly_game_info(week_num):
