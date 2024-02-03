@@ -114,3 +114,12 @@ def recreate_data():
     create_game_info()
     create_all_picks()
     create_all_picks_info()
+
+
+# Easier way to call already-created tables in my notebook.
+def get_table(table_name):
+    df = pd.read_excel(f"{DATA_PATH}/{table_name}.xlsx")
+    exclude_col = "email"
+    if exclude_col in df.columns:
+        df = df.drop(columns=[exclude_col])
+    return df
