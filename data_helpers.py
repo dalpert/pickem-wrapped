@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import re
-from constants import name_dict
+from identifiers import name_dict
 
 DATA_PATH = "data/generated_data"
 
