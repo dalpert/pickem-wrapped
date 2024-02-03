@@ -105,3 +105,12 @@ def create_all_picks_info():
         all_picks_info["away_team"],
     )
     all_picks_info.to_excel(f"{DATA_PATH}/all_picks_info.xlsx", index=False)
+
+
+# If I manually change the source data (sometimes I need to do some manual cleaning because it's
+# messy), I like to just reprocess and write all of the tables. Since it's very small data, it
+# only takes a few seconds. This command allows for me to do it in one fell swoop.
+def recreate_data():
+    create_game_info()
+    create_all_picks()
+    create_all_picks_info()
