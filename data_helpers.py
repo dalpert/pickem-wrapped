@@ -5,10 +5,14 @@ from identifiers import name_dict
 DATA_PATH = "data/generated_data"
 
 
+def load_pickem_raw(week_num):
+    return pd.read_excel("data/pickem_results_23_24.xlsx", sheet_name=f"week{week_num}")
+
+
 def get_weekly_game_info(week_num):
     """Get relevant game info for one week of games."""
 
-    df = pd.read_excel("data/pickem_results_23_24.xlsx", sheet_name=f"week{week_num}")
+    df = load_pickem_raw(week_num)
     # first row of all nulls (where I'm going to cut off the table)
     first_row = df.index[df.isnull().all(1)].values[0]
     # row after last row of games (where totals are calculated)
@@ -61,7 +65,7 @@ def create_game_info():
 
 def get_weekly_picks(week_num):
     """Get picks for one week of games"""
-    df = pd.read_excel("data/pickem_results_23_24.xlsx", sheet_name=f"week{week_num}")
+    df = load_pickem_raw(week_num)
     first_row = df.index[df.isnull().all(1)].values[0]
     df = df[:first_row]
     df.drop(["Timestamp", "Name", "Email"], axis=1, inplace=True, errors="ignore")
