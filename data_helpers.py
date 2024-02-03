@@ -42,8 +42,8 @@ def get_favorite(row):
     return ("None", "None")
 
 
-def make_game_info():
-    """Makes the game_info table."""
+def create_game_info():
+    """Creates the game_info table."""
     info_sheets = []
     for i in range(1, 19):
         info_sheets.append(get_weekly_game_info(i))
@@ -80,7 +80,8 @@ def get_weekly_picks(week_num):
     return df_explode
 
 
-def make_all_picks():
+def create_all_picks():
+    """Creates a table for all users picks for all weeks."""
     weekly_picks_lst = []
     for i in range(1, 19):
         weekly_picks_lst.append(get_weekly_picks(i))
