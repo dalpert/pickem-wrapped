@@ -3,6 +3,8 @@ import pandas as pd
 import re
 from constants import name_dict
 
+DATA_PATH = "data/generated_data"
+
 
 def get_weekly_game_info(week_num):
     """Get relevant game info for one week of games."""
@@ -55,7 +57,7 @@ def create_game_info():
     game_info["favorite"], game_info["underdog"] = zip(
         *game_info.apply(get_favorite, axis=1)
     )
-    game_info.to_excel("data/generated_data/game_info.xlsx", index=False)
+    game_info.to_excel(f"{DATA_PATH}/game_info.xlsx", index=False)
 
 
 def get_weekly_picks(week_num):
@@ -87,4 +89,19 @@ def create_all_picks():
         weekly_picks_lst.append(get_weekly_picks(i))
     all_picks = pd.concat(weekly_picks_lst)
     all_picks["user_id"] = all_picks["email"].apply(lambda x: name_dict[x])
-    all_picks.to_excel("data/generated_data/all_picks.xlsx", index=False)
+    all_picks.to_excel(f"{DATA_PATH}/all_picks.xlsx", index=False)
+
+
+def create_all_picks_info():
+    """Create a table that joins individual picks with relevant info about those games."""
+    all_picks = pd.read_excel(f"{DATA_PATH}/all_picks.xlsx")
+    game_info = pd.read_excel(f"{DATA_PATH}/game_info.xlsx")
+    all_picks_info = pd.merge(
+        all_picks, game_info, on=["week_id", "game_id"], how="inner"
+    )
+    all_picks_info["didnt_pick"] = np.where(
+        all_picks_info["pick"] == all_picks_info["away_team"],
+        all_picks_info["home_team"],
+        all_picks_info["away_team"],
+    )
+    all_picks_info.to_excel(f"{DATA_PATH}/all_picks_info.xlsx", index=False)
