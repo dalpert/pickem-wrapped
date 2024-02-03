@@ -54,18 +54,7 @@ def make_game_info():
     game_info["favorite"], game_info["underdog"] = zip(
         *game_info.apply(get_favorite, axis=1)
     )
-    game_info.to_excel("data/game_info.xlsx", index=False)
-
-
-name_dict = {
-    "adam.lassman@gmail.com": "adam",
-    "andrespintopro@gmail.com": "andres",
-    "dalpert89@gmail.com": "daniel",
-    "greg.forward029@gmail.com": "greg",
-    "jordan.angel7472@gmail.com": "jordan",
-    "jtocci19@gmail.com": "james",
-    "warnercp10@gmail.com": "colin",
-}
+    game_info.to_excel("data/generated_data/game_info.xlsx", index=False)
 
 
 def get_weekly_picks(week_num):
