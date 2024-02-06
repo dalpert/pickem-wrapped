@@ -39,7 +39,7 @@ def get_away_line(game_str) -> float:
     return float(re.sub("[()]", "", away_line_str))
 
 
-def get_favorite(row) -> tuple(str, str):
+def get_favorite(row) -> tuple[str, str]:
     if row["away_line"] < 0:
         # return favorite, underdog
         return (row["away_team"], row["home_team"])
